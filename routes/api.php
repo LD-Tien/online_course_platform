@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,34 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return $request->user();
     });
 });
+
+Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::ADMIN])
+    ->prefix('admin')->group(function () {
+        Route::get('', function () {
+            return 'admin';
+        });
+    });
+
+Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::CENSOR])
+    ->prefix('censor')->group(function () {
+        Route::get('', function () {
+            return 'censor';
+        });
+    });
+
+Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::INSTRUCTOR])
+    ->prefix('instructor')->group(function () {
+        Route::get('', function () {
+            return 'instructor';
+        });
+    });
+
+Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::LEANER])
+    ->group(function () {
+        Route::get('', function () {
+            return 'leaner';
+        });
+    });
 
 Route::get('/test', function () {
     return 'test api successfully.';
