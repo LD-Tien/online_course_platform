@@ -1,6 +1,8 @@
 <?php
 
 use App\Enums\UserRole;
+use App\Http\Controllers\Category\CategoryController;
+use App\Http\Controllers\Course\CourseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +28,11 @@ Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::ADMIN])
         Route::get('', function () {
             return 'admin';
         });
+        Route::get('categories', [CategoryController::class, 'index']);
+        Route::get('categories/{id}', [CategoryController::class, 'show']);
+        Route::post('categories', [CategoryController::class, 'store']);
+        Route::put('categories/{id}', [CategoryController::class, 'update']);
+        Route::delete('categories/{id}', [CategoryController::class, 'destroy']);
     });
 
 Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::CENSOR])
@@ -40,9 +47,14 @@ Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::INSTRUCTOR])
         Route::get('', function () {
             return 'instructor';
         });
+        Route::get('courses', [CourseController::class, 'index']);
+        Route::get('courses/{id}', [CourseController::class, 'show']);
+        Route::post('courses', [CourseController::class, 'store']);
+        Route::put('courses/{id}', [CourseController::class, 'update']);
+        Route::delete('courses/{id}', [CourseController::class, 'destroy']);
     });
 
-Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::LEANER])
+Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::LEANER . ',' . UserRole::INSTRUCTOR])
     ->group(function () {
         Route::get('', function () {
             return 'leaner';
