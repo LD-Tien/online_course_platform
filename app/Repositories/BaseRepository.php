@@ -21,7 +21,10 @@ class BaseRepository implements CrudRepositoryInterface
 
     public function update(array $data, int $id)
     {
-        return $this->find($id)->update($data);
+        $model = $this->find($id);
+        $model->update($data);
+
+        return $model;
     }
 
     public function delete(int $id)

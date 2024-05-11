@@ -7,7 +7,7 @@ use App\Services\BaseService;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
-class CreateCourseService extends BaseService
+class FindCourseByIdService extends BaseService
 {
     protected $courseRepository;
     public function __construct(CourseRepositoryInterface $courseRepository)
@@ -18,7 +18,7 @@ class CreateCourseService extends BaseService
     public function handle()
     {
         try {
-            return $this->courseRepository->create($this->data);
+            return $this->courseRepository->find($this->data['id']);
         } catch (Exception $e) {
             Log::info($e);
 

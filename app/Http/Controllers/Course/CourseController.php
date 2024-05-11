@@ -3,7 +3,17 @@
 namespace App\Http\Controllers\Course;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Course\CourseCollection;
+use App\Http\Resources\Course\CourseResource;
+use App\Models\Course;
+use App\Services\Course\CreateCourseService;
+use App\Services\Course\DeleteCourseService;
+use App\Services\Course\FindCourseByIdService;
+use App\Services\Course\GetAllByFieldService;
+use App\Services\Course\UpdateCourseService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class CourseController extends Controller
 {
@@ -12,7 +22,18 @@ class CourseController extends Controller
      */
     public function index()
     {
-        return 'get all';
+        $result = resolve(GetAllByFieldService::class)
+            ->setParams(['column' => 'user_id', 'value' => Auth::id()])
+            ->handle();
+
+        if ($result) {
+            return $this->responseSuccess([
+                'message' => __('messages.course.get_all_success'),
+                'data' => new CourseCollection($result)
+            ]);
+        }
+
+        return $this->responseErrors(__('messages.course.get_all_fail'));
     }
 
     /**
@@ -20,7 +41,18 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        return 'create course';
+        $result = resolve(CreateCourseService::class)
+            ->setParams([...$request->all(), 'user_id' => Auth::id()])
+            ->handle();
+
+        if ($result) {
+            return $this->responseSuccess([
+                'message' => __('messages.course.create_success'),
+                'data' => new CourseResource($result)
+            ], Response::HTTP_CREATED);
+        }
+
+        return $this->responseErrors(__('messages.course.create_fail'));
     }
 
     /**
@@ -28,22 +60,48 @@ class CourseController extends Controller
      */
     public function show(string $id)
     {
-        return 'get one course';
+        $result = resolve(FindCourseByIdService::class)->setParams(['id' => $id])->handle();
+
+        if ($result) {
+            return $this->responseSuccess([
+                'message' => __('messages.course.get_success'),
+                'data' => new CourseResource($result)
+            ]);
+        }
+
+        return $this->responseErrors(__('messages.course.get_fail'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Course $course)
     {
-        return 'update course';
+        $result = resolve(UpdateCourseService::class)->setParams(['course' => $course, 'dataUpdate' => $request->all()])->handle();
+
+        if ($result) {
+            return $this->responseSuccess([
+                'message' => __('messages.course.update_success'),
+                'data' => new CourseResource($result)
+            ]);
+        }
+
+        return $this->responseErrors(__('messages.course.update_fail'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Course $course)
     {
-        return 'delete course';
+        $result = resolve(DeleteCourseService::class)->setParams(['deleteCourse' => $course])->handle();
+
+        if ($result) {
+            return $this->responseSuccess([
+                'message' => __('messages.course.delete_success')
+            ]);
+        }
+
+        return $this->responseErrors(__('messages.course.delete_fail'));
     }
 }

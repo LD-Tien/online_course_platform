@@ -12,4 +12,16 @@ class Course extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'course';
+
+    protected $fillable = [
+        'id',
+        'thumbnail_path',
+        'course_name',
+        'description',
+        'price',
+        'is_progress_limited',
+        'category_id',
+        'user_id',
+        'status',
+    ];
 }

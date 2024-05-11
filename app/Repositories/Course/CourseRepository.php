@@ -12,4 +12,9 @@ class CourseRepository extends BaseRepository implements CourseRepositoryInterfa
     {
         $this->model = $course;
     }
+
+    public function getAllByField($column, $value, $operator = '=')
+    {
+        return $this->model->where($column, $operator, $value)->get();
+    }
 }

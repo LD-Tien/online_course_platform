@@ -16,11 +16,11 @@ return new class extends Migration {
     {
         Schema::create('course', function (Blueprint $table) {
             $table->id();
-            $table->string('thumbnail_url', 2048);
+            $table->string('thumbnail_path')->nullable();
             $table->string('course_name');
-            $table->string('description');
-            $table->unsignedFloat('price');
-            $table->boolean('is_progress_limited');
+            $table->string('description', 4000)->nullable();
+            $table->unsignedFloat('price')->default(0);
+            $table->boolean('is_progress_limited')->default(false);
             $table->unsignedSmallInteger('category_id');
             $table->unsignedBigInteger('user_id');
             $table->enum('status', CourseStatus::getValues())->default(CourseStatus::DRAFT);
