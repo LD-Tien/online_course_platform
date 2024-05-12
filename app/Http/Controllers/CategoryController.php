@@ -1,35 +1,29 @@
 <?php
 
-namespace App\Http\Controllers\Course;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Course\CourseCollection;
-use App\Http\Resources\Course\CourseResource;
-use App\Models\Course;
-use App\Services\Course\CreateCourseService;
-use App\Services\Course\DeleteCourseService;
-use App\Services\Course\FindCourseByIdService;
-use App\Services\Course\GetAllByFieldService;
-use App\Services\Course\UpdateCourseService;
+use App\Services\Category\CreateCategoryService;
+use App\Services\Category\DeleteCategoryService;
+use App\Services\Category\FindCategoryService;
+use App\Services\Category\GetAllByFieldService;
+use App\Services\Category\UpdateCategoryService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class CourseController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $result = resolve(GetAllByFieldService::class)
-            ->setParams(['column' => 'user_id', 'value' => Auth::id()])
-            ->handle();
+        $result = resolve(GetAllByFieldService::class)->handle();
 
         if ($result) {
             return $this->responseSuccess([
                 'message' => __('messages.get_success'),
-                'data' => new CourseCollection($result)
+                'data' => $result
             ]);
         }
 
@@ -41,14 +35,12 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        $result = resolve(CreateCourseService::class)
-            ->setParams([...$request->all(), 'user_id' => Auth::id()])
-            ->handle();
+        $result = resolve(CreateCategoryService::class)->setParams()->handle();
 
         if ($result) {
             return $this->responseSuccess([
                 'message' => __('messages.create_success'),
-                'data' => new CourseResource($result)
+                'data' => $result
             ], Response::HTTP_CREATED);
         }
 
@@ -60,12 +52,12 @@ class CourseController extends Controller
      */
     public function show(string $id)
     {
-        $result = resolve(FindCourseByIdService::class)->setParams(['id' => $id])->handle();
+        $result = resolve(FindCategoryService::class)->setParams(['id' => $id])->handle();
 
         if ($result) {
             return $this->responseSuccess([
                 'message' => __('messages.get_success'),
-                'data' => new CourseResource($result)
+                'data' => $result
             ]);
         }
 
@@ -75,14 +67,14 @@ class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Course $course)
+    public function update(Request $request, string $id)
     {
-        $result = resolve(UpdateCourseService::class)->setParams(['course' => $course, 'dataUpdate' => $request->all()])->handle();
+        $result = resolve(UpdateCategoryService::class)->setParams([...$request->all(), 'id' => $id])->handle();
 
         if ($result) {
             return $this->responseSuccess([
                 'message' => __('messages.update_success'),
-                'data' => new CourseResource($result)
+                'data' => $result
             ]);
         }
 
@@ -92,13 +84,14 @@ class CourseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Course $course)
+    public function destroy(string $id)
     {
-        $result = resolve(DeleteCourseService::class)->setParams(['deleteCourse' => $course])->handle();
+        $result = resolve(DeleteCategoryService::class)->setParams(['id' => $id])->handle();
 
         if ($result) {
             return $this->responseSuccess([
-                'message' => __('messages.delete_success')
+                'message' => __('messages.delete_success'),
+                'data' => $result
             ]);
         }
 

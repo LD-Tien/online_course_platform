@@ -1,29 +1,35 @@
 <?php
 
-namespace App\Http\Controllers\Category;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Services\Category\CreateCategoryService;
-use App\Services\Category\DeleteCategoryService;
-use App\Services\Category\FindCategoryService;
-use App\Services\Category\GetAllByFieldService;
-use App\Services\Category\UpdateCategoryService;
+use App\Http\Resources\Course\CourseCollection;
+use App\Http\Resources\Course\CourseResource;
+use App\Models\Course;
+use App\Services\Course\CreateCourseService;
+use App\Services\Course\DeleteCourseService;
+use App\Services\Course\FindCourseByIdService;
+use App\Services\Course\GetAllByFieldService;
+use App\Services\Course\UpdateCourseService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class CategoryController extends Controller
+class CourseController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $result = resolve(GetAllByFieldService::class)->handle();
+        $result = resolve(GetAllByFieldService::class)
+            ->setParams(['column' => 'user_id', 'value' => Auth::id()])
+            ->handle();
 
         if ($result) {
             return $this->responseSuccess([
                 'message' => __('messages.get_success'),
-                'data' => $result
+                'data' => new CourseCollection($result)
             ]);
         }
 
@@ -35,12 +41,14 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $result = resolve(CreateCategoryService::class)->setParams()->handle();
+        $result = resolve(CreateCourseService::class)
+            ->setParams([...$request->all(), 'user_id' => Auth::id()])
+            ->handle();
 
         if ($result) {
             return $this->responseSuccess([
                 'message' => __('messages.create_success'),
-                'data' => $result
+                'data' => new CourseResource($result)
             ], Response::HTTP_CREATED);
         }
 
@@ -52,12 +60,12 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        $result = resolve(FindCategoryService::class)->setParams(['id' => $id])->handle();
+        $result = resolve(FindCourseByIdService::class)->setParams(['id' => $id])->handle();
 
         if ($result) {
             return $this->responseSuccess([
                 'message' => __('messages.get_success'),
-                'data' => $result
+                'data' => new CourseResource($result)
             ]);
         }
 
@@ -67,14 +75,14 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Course $course)
     {
-        $result = resolve(UpdateCategoryService::class)->setParams([...$request->all(), 'id' => $id])->handle();
+        $result = resolve(UpdateCourseService::class)->setParams(['course' => $course, 'dataUpdate' => $request->all()])->handle();
 
         if ($result) {
             return $this->responseSuccess([
                 'message' => __('messages.update_success'),
-                'data' => $result
+                'data' => new CourseResource($result)
             ]);
         }
 
@@ -84,14 +92,13 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Course $course)
     {
-        $result = resolve(DeleteCategoryService::class)->setParams(['id' => $id])->handle();
+        $result = resolve(DeleteCourseService::class)->setParams(['deleteCourse' => $course])->handle();
 
         if ($result) {
             return $this->responseSuccess([
-                'message' => __('messages.delete_success'),
-                'data' => $result
+                'message' => __('messages.delete_success')
             ]);
         }
 

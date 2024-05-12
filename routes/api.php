@@ -1,10 +1,9 @@
 <?php
 
 use App\Enums\UserRole;
-use App\Http\Controllers\Category\CategoryController;
-use App\Http\Controllers\Course\CourseController;
-use App\Http\Controllers\Module\ModuleController;
-use App\Models\Course;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\ModuleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 

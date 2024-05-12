@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Module;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Module\ModuleResource;
@@ -10,6 +10,7 @@ use App\Services\Module\UpdateModuleService;
 use App\Services\Module\CreateModuleService;
 use App\Services\Module\DeleteModuleService;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ModuleController extends Controller
 {
@@ -37,7 +38,7 @@ class ModuleController extends Controller
             return $this->responseSuccess([
                 'message' => __('messages.create_success'),
                 'data' => new ModuleResource($result)
-            ]);
+            ], Response::HTTP_CREATED);
         }
 
         return $this->responseErrors(__('messages.create_fail'));
