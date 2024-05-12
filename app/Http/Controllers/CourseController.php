@@ -58,18 +58,12 @@ class CourseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Course $course)
     {
-        $result = resolve(FindCourseByIdService::class)->setParams(['id' => $id])->handle();
-
-        if ($result) {
-            return $this->responseSuccess([
-                'message' => __('messages.get_success'),
-                'data' => new CourseResource($result)
-            ]);
-        }
-
-        return $this->responseErrors(__('messages.get_fail'));
+        return $this->responseSuccess([
+            'message' => __('messages.get_success'),
+            'data' => new CourseResource($course),
+        ]);
     }
 
     /**

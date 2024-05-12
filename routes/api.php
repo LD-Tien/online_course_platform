@@ -3,6 +3,7 @@
 use App\Enums\UserRole;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ModuleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -50,7 +51,7 @@ Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::INSTRUCTOR])
         });
         Route::prefix('courses')->group(function () {
             Route::get('', [CourseController::class, 'index']);
-            Route::get('{id}', [CourseController::class, 'show']);
+            Route::get('{course}', [CourseController::class, 'show']);
             Route::post('', [CourseController::class, 'store']);
             Route::put('{course}', [CourseController::class, 'update']);
             Route::delete('{course}', [CourseController::class, 'destroy']);
@@ -60,6 +61,14 @@ Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::INSTRUCTOR])
                 Route::get('', [ModuleController::class, 'index']);
                 Route::put('{module}', [ModuleController::class, 'update']);
                 Route::delete('{module}', [ModuleController::class, 'destroy']);
+
+                Route::prefix('{module}/lessons')->group(function () {
+                    Route::post('', [LessonController::class, 'store']);
+                    Route::get('', [LessonController::class, 'index']);
+                    Route::get('{lesson}', [LessonController::class, 'show']);
+                    Route::put('{lesson}', [LessonController::class, 'update']);
+                    Route::delete('{lesson}', [LessonController::class, 'destroy']);
+                });
             });
         });
     });

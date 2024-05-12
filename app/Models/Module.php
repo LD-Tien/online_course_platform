@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Module extends Model
 {
@@ -16,4 +17,9 @@ class Module extends Model
         'ordinal_number',
         'course_id',
     ];
+
+    public function lessons(): HasMany
+    {
+        return $this->hasMany(Lesson::class);
+    }
 }

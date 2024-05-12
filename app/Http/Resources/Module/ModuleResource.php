@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Module;
 
+use App\Http\Resources\Lesson\LessonResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -19,6 +20,7 @@ class ModuleResource extends JsonResource
             'name' => $this->name,
             'ordinal_number' => $this->ordinal_number,
             'course_id' => $this->course_id,
+            'lessons' => LessonResource::collection($this->lessons),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

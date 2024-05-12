@@ -14,7 +14,7 @@ return new class extends Migration {
         Schema::create('lesson', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('video_url', 2048);
+            $table->string('video_path');
             $table->string('description', 4000);
             $table->boolean('is_preview')->default(false);
             $table->enum('status', LessonStatus::getValues())->default(LessonStatus::DRAFT);
