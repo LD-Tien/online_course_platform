@@ -22,12 +22,12 @@ class CategoryController extends Controller
 
         if ($result) {
             return $this->responseSuccess([
-                'message' => __('messages.category.get_all_success'),
+                'message' => __('messages.get_success'),
                 'data' => $result
             ]);
         }
 
-        return $this->responseErrors(__('messages.category.get_all_fail'));
+        return $this->responseErrors(__('messages.get_fail'));
     }
 
     /**
@@ -39,12 +39,12 @@ class CategoryController extends Controller
 
         if ($result) {
             return $this->responseSuccess([
-                'message' => __('messages.category.create_success'),
+                'message' => __('messages.create_success'),
                 'data' => $result
             ], Response::HTTP_CREATED);
         }
 
-        return $this->responseErrors(__('messages.category.create_fail'));
+        return $this->responseErrors(__('messages.create_fail'));
     }
 
     /**
@@ -56,12 +56,12 @@ class CategoryController extends Controller
 
         if ($result) {
             return $this->responseSuccess([
-                'message' => __('messages.category.get_success'),
+                'message' => __('messages.get_success'),
                 'data' => $result
             ]);
         }
 
-        return $this->responseErrors(__('messages.category.get_fail'));
+        return $this->responseErrors(__('messages.get_fail'));
     }
 
     /**
@@ -73,12 +73,12 @@ class CategoryController extends Controller
 
         if ($result) {
             return $this->responseSuccess([
-                'message' => __('messages.category.update_success'),
+                'message' => __('messages.update_success'),
                 'data' => $result
             ]);
         }
 
-        return $this->responseErrors(__('messages.category.update_fail'));
+        return $this->responseErrors(__('messages.update_fail'));
     }
 
     /**
@@ -90,11 +90,11 @@ class CategoryController extends Controller
 
         if ($result) {
             return $this->responseSuccess([
-                'message' => __('messages.category.delete_success'),
+                'message' => __('messages.delete_success'),
                 'data' => $result
             ]);
         }
 
-        return $this->responseErrors(__('messages.category.delete_fail'));
+        return $this->responseErrors(__('messages.delete_fail'));
     }
 }

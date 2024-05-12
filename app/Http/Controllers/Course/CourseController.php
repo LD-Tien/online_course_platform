@@ -28,12 +28,12 @@ class CourseController extends Controller
 
         if ($result) {
             return $this->responseSuccess([
-                'message' => __('messages.course.get_all_success'),
+                'message' => __('messages.get_success'),
                 'data' => new CourseCollection($result)
             ]);
         }
 
-        return $this->responseErrors(__('messages.course.get_all_fail'));
+        return $this->responseErrors(__('messages.get_fail'));
     }
 
     /**
@@ -47,12 +47,12 @@ class CourseController extends Controller
 
         if ($result) {
             return $this->responseSuccess([
-                'message' => __('messages.course.create_success'),
+                'message' => __('messages.create_success'),
                 'data' => new CourseResource($result)
             ], Response::HTTP_CREATED);
         }
 
-        return $this->responseErrors(__('messages.course.create_fail'));
+        return $this->responseErrors(__('messages.create_fail'));
     }
 
     /**
@@ -64,12 +64,12 @@ class CourseController extends Controller
 
         if ($result) {
             return $this->responseSuccess([
-                'message' => __('messages.course.get_success'),
+                'message' => __('messages.get_success'),
                 'data' => new CourseResource($result)
             ]);
         }
 
-        return $this->responseErrors(__('messages.course.get_fail'));
+        return $this->responseErrors(__('messages.get_fail'));
     }
 
     /**
@@ -81,12 +81,12 @@ class CourseController extends Controller
 
         if ($result) {
             return $this->responseSuccess([
-                'message' => __('messages.course.update_success'),
+                'message' => __('messages.update_success'),
                 'data' => new CourseResource($result)
             ]);
         }
 
-        return $this->responseErrors(__('messages.course.update_fail'));
+        return $this->responseErrors(__('messages.update_fail'));
     }
 
     /**
@@ -98,10 +98,10 @@ class CourseController extends Controller
 
         if ($result) {
             return $this->responseSuccess([
-                'message' => __('messages.course.delete_success')
+                'message' => __('messages.delete_success')
             ]);
         }
 
-        return $this->responseErrors(__('messages.course.delete_fail'));
+        return $this->responseErrors(__('messages.delete_fail'));
     }
 }

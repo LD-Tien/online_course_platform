@@ -19,7 +19,7 @@ class ModuleController extends Controller
     public function index(Course $course)
     {
         return $this->responseSuccess([
-            'message' => __('messages.module.get_all_success'),
+            'message' => __('messages.get_success'),
             'data' => ModuleResource::collection($course->modules)
         ]);
     }
@@ -35,12 +35,12 @@ class ModuleController extends Controller
 
         if ($result) {
             return $this->responseSuccess([
-                'message' => __('messages.module.create_success'),
+                'message' => __('messages.create_success'),
                 'data' => new ModuleResource($result)
             ]);
         }
 
-        return $this->responseErrors(__('messages.module.create_fail'));
+        return $this->responseErrors(__('messages.create_fail'));
     }
 
     /**
@@ -54,12 +54,12 @@ class ModuleController extends Controller
 
         if ($result) {
             return $this->responseSuccess([
-                'message' => __('messages.module.update_success'),
+                'message' => __('messages.update_success'),
                 'data' => new ModuleResource($result)
             ]);
         }
 
-        return $this->responseErrors(__('messages.module.delete_fail'));
+        return $this->responseErrors(__('messages.delete_fail'));
     }
 
     /**
@@ -71,10 +71,10 @@ class ModuleController extends Controller
 
         if ($result) {
             return $this->responseSuccess([
-                'message' => __('messages.module.delete_success'),
+                'message' => __('messages.delete_success'),
             ]);
         }
 
-        return $this->responseErrors(__('messages.module.delete_fail'));
+        return $this->responseErrors(__('messages.delete_fail'));
     }
 }
