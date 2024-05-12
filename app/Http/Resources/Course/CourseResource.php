@@ -25,6 +25,7 @@ class CourseResource extends JsonResource
             'category_id' => $this->category_id,
             'user_id' => $this->user_id,
             'status' => (int) $this->status,
+            'modules' => $this->modules,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];

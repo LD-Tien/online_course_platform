@@ -24,5 +24,17 @@ return [
         'update_fail' => 'Failed to update course.',
         'delete_success' => 'Course deleted successfully.',
         'delete_fail' => 'Failed to delete course.',
-    ]
+    ],
+    'module' => [
+        'create_success' => 'Module created successfully.',
+        'create_fail' => 'Failed to create module.',
+        'get_success' => 'Module retrieved successfully.',
+        'get_fail' => 'Failed to retrieve module.',
+        'get_all_success' => 'All modules retrieved successfully.',
+        'get_all_fail' => 'Failed to retrieve all modules.',
+        'update_success' => 'Module updated successfully.',
+        'update_fail' => 'Failed to update module.',
+        'delete_success' => 'Module deleted successfully.',
+        'delete_fail' => 'Failed to delete module.',
+    ],
 ];

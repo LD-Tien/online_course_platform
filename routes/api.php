@@ -3,6 +3,8 @@
 use App\Enums\UserRole;
 use App\Http\Controllers\Category\CategoryController;
 use App\Http\Controllers\Course\CourseController;
+use App\Http\Controllers\Module\ModuleController;
+use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,11 +49,20 @@ Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::INSTRUCTOR])
         Route::get('', function () {
             return 'instructor';
         });
-        Route::get('courses', [CourseController::class, 'index']);
-        Route::get('courses/{id}', [CourseController::class, 'show']);
-        Route::post('courses', [CourseController::class, 'store']);
-        Route::put('courses/{course}', [CourseController::class, 'update']);
-        Route::delete('courses/{course}', [CourseController::class, 'destroy']);
+        Route::prefix('courses')->group(function () {
+            Route::get('', [CourseController::class, 'index']);
+            Route::get('{id}', [CourseController::class, 'show']);
+            Route::post('', [CourseController::class, 'store']);
+            Route::put('{course}', [CourseController::class, 'update']);
+            Route::delete('{course}', [CourseController::class, 'destroy']);
+
+            Route::prefix('{course}/modules')->group(function () {
+                Route::post('', [ModuleController::class, 'store']);
+                Route::get('', [ModuleController::class, 'index']);
+                Route::put('{module}', [ModuleController::class, 'update']);
+                Route::delete('{module}', [ModuleController::class, 'destroy']);
+            });
+        });
     });
 
 Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::LEANER . ',' . UserRole::INSTRUCTOR])

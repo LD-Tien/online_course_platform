@@ -10,4 +10,10 @@ class Module extends Model
     use HasFactory;
 
     protected $table = 'module';
+
+    protected $fillable = [
+        'name',
+        'ordinal_number',
+        'course_id',
+    ];
 }
