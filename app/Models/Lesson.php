@@ -20,5 +20,7 @@ class Lesson extends Model
         'status',
         'ordinal_number',
         'module_id',
+        'analysis_text_result_json',
+        'analysis_video_result_json'
     ];
 }

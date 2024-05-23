@@ -58,6 +58,10 @@ return [
 
     'frontend_url' => env('FRONTEND_URL', 'http://localhost:3000'),
 
+    'eden_ai_api_url' => env('EDEN_AI_API_URL', 'https://api.edenai.run/v2'),
+
+    'eden_ai_api_key' => env('EDEN_AI_API_KEY'),
+
     'asset_url' => env('ASSET_URL', '/'),
 
     /*
@@ -71,7 +75,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Ho_Chi_Minh',
 
     /*
     |--------------------------------------------------------------------------

@@ -3,6 +3,7 @@
 use App\Enums\UserRole;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CourseModerationController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ModuleController;
 use Illuminate\Http\Request;
@@ -37,10 +38,18 @@ Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::ADMIN])
         Route::delete('categories/{id}', [CategoryController::class, 'destroy']);
     });
 
-Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::CENSOR])
-    ->prefix('censor')->group(function () {
+Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::MODERATOR])
+    ->prefix('moderator')->group(function () {
         Route::get('', function () {
-            return 'censor';
+            return 'moderator';
+        });
+
+        Route::prefix('courses')->group(function () {
+            Route::get('', [CourseController::class, 'index']);
+            Route::get('{course}', [CourseController::class, 'show']);
+            Route::get('{course}/analysis', [CourseModerationController::class, 'startCourseAnalysis']);
+            Route::get('{course}/modules/{module}/lessons/{lesson}/analysis', [CourseModerationController::class, 'startLessonAnalysis']);
+            Route::post('handleResponseEdenAI', [CourseModerationController::class, 'handleResponseEdenAI']);
         });
     });
 
@@ -73,12 +82,16 @@ Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::INSTRUCTOR])
         });
     });
 
-Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::LEANER . ',' . UserRole::INSTRUCTOR])
+Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::LEARNER . ',' . UserRole::INSTRUCTOR])
     ->group(function () {
         Route::get('', function () {
             return 'leaner';
         });
     });
+
+Route::prefix('eden-ai')->group(function () {
+    Route::post('/webhook/moderation-video/{lesson}', [CourseModerationController::class, 'handleVideoReviewResult'])->name('webhook.handle-video-review-result');
+});
 
 Route::get('/test', function () {
     return 'test api successfully.';

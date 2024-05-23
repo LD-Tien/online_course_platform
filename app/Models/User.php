@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\UserRole;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -65,5 +66,45 @@ class User extends Authenticatable implements MustVerifyEmail
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = Hash::make($value);
+    }
+
+    /**
+     * Check if the user has admin role.
+     *
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return $this->attributes['role'] == UserRole::ADMIN;
+    }
+
+    /**
+     * Check if the user has moderator role.
+     *
+     * @return bool
+     */
+    public function isModerator()
+    {
+        return $this->attributes['role'] == UserRole::MODERATOR;
+    }
+
+    /**
+     * Check if the user has instructor role.
+     *
+     * @return bool
+     */
+    public function isInstructor()
+    {
+        return $this->attributes['role'] == UserRole::INSTRUCTOR;
+    }
+
+    /**
+     * Check if the user has learner role.
+     *
+     * @return bool
+     */
+    public function isLearner()
+    {
+        return $this->attributes['role'] == UserRole::LEARNER;
     }
 }

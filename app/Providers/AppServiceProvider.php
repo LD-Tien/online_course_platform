@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Interfaces\Category\CategoryRepositoryInterface;
+use App\Interfaces\Moderation\ModerationRepositoryInterface;
 use App\Interfaces\Lesson\LessonRepositoryInterface;
 use App\Interfaces\Module\ModuleRepositoryInterface;
 use App\Interfaces\User\UserRepositoryInterface;
 use App\Repositories\Category\CategoryRepository;
+use App\Repositories\EdenAI\EdenAIRepository;
 use App\Repositories\Lesson\LessonRepository;
 use App\Repositories\Module\ModuleRepository;
 use App\Repositories\User\UserRepository;
@@ -26,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CourseRepositoryInterface::class, CourseRepository::class);
         $this->app->bind(ModuleRepositoryInterface::class, ModuleRepository::class);
         $this->app->bind(LessonRepositoryInterface::class, LessonRepository::class);
+        $this->app->bind(ModerationRepositoryInterface::class, EdenAIRepository::class);
     }
 
     /**

@@ -8,7 +8,6 @@ use App\Http\Resources\Course\CourseResource;
 use App\Models\Course;
 use App\Services\Course\CreateCourseService;
 use App\Services\Course\DeleteCourseService;
-use App\Services\Course\FindCourseByIdService;
 use App\Services\Course\GetAllByFieldService;
 use App\Services\Course\UpdateCourseService;
 use Illuminate\Http\Request;

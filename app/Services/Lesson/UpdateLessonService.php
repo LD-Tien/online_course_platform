@@ -19,7 +19,7 @@ class UpdateLessonService extends BaseService
     public function handle()
     {
         try {
-            if ($this->data['dataUpdate']['video_file']) {
+            if (isset($this->data['dataUpdate']['video_file'])) {
                 Storage::delete($this->data['lesson']['video_path']);
                 $file = $this->data['dataUpdate']['video_file'];
                 $path = "public/uploads/user_{$this->data['user_id']}/course_{$this->data['course_id']}/lesson_{$this->data['lesson']['id']}";
@@ -30,7 +30,10 @@ class UpdateLessonService extends BaseService
             return $this->lessonRepository->update($this->data['dataUpdate'], $this->data['lesson']['id']);
         } catch (Exception $e) {
             Log::info($e);
-            Storage::delete($videoPath);
+
+            if (isset($videoPath)) {
+                Storage::delete($videoPath);
+            }
 
             return false;
         }

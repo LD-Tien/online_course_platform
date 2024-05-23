@@ -20,6 +20,8 @@ return new class extends Migration {
             $table->enum('status', LessonStatus::getValues())->default(LessonStatus::DRAFT);
             $table->smallInteger('ordinal_number');
             $table->unsignedBigInteger('module_id');
+            $table->json('analysis_text_result_json')->nullable();
+            $table->json('analysis_video_result_json')->nullable();
             $table->timestamps();
 
             /** Foreign key */
