@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->string('description', 4000);
             $table->unsignedTinyInteger('min_pass_score')->default(0);
             $table->boolean('is_required')->default(false);
-            $table->enum('status', QuizStatus::getValues())->default(QuizStatus::DRAFT);
+            $table->tinyInteger('status')->default(QuizStatus::DRAFT);
             $table->timestamps();
 
             /** Foreign key */

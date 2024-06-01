@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->timestamp('email_verified_at')->nullable();
             $table->string('profile_photo_url', 2048)->nullable();
             $table->string('biography')->nullable();
-            $table->enum('role', [UserRole::getValues()])->default(UserRole::LEARNER);
+            $table->tinyInteger('role')->default(UserRole::LEARNER);
             $table->string('provider_id')->nullable();
             $table->string('provider_name')->nullable();
             $table->string('payer_email')->nullable();

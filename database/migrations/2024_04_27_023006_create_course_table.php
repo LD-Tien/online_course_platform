@@ -23,7 +23,7 @@ return new class extends Migration {
             $table->boolean('is_progress_limited')->default(false);
             $table->unsignedSmallInteger('category_id');
             $table->unsignedBigInteger('user_id');
-            $table->enum('status', CourseStatus::getValues())->default(CourseStatus::DRAFT);
+            $table->tinyInteger('status')->default(CourseStatus::DRAFT);
             $table->timestamps();
             $table->softDeletes();
 

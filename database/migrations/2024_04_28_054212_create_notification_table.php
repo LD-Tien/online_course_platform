@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('user_id');
             $table->string('title', 500);
             $table->string('content', 2000);
-            $table->enum('source_type', NotificationType::getValues());
+            $table->tinyInteger('source_type');
             $table->unsignedBigInteger('source_id');
             $table->timestamps();
 

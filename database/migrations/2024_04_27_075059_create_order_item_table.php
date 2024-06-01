@@ -16,8 +16,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('course_id');
             $table->unsignedFloat('price');
-            $table->enum('status', OrderItemStatus::getValues())
-                ->default(OrderItemStatus::PAID);
+            $table->tinyInteger('status')->default(OrderItemStatus::PAID);
             $table->timestamps();
 
             /** Foreign key */

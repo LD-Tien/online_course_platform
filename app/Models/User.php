@@ -75,7 +75,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function isAdmin()
     {
-        return $this->attributes['role'] == UserRole::ADMIN;
+        return $this->attributes['role'] === UserRole::ADMIN;
     }
 
     /**
@@ -85,7 +85,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function isModerator()
     {
-        return $this->attributes['role'] == UserRole::MODERATOR;
+        return $this->attributes['role'] === UserRole::MODERATOR;
     }
 
     /**
@@ -95,7 +95,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function isInstructor()
     {
-        return $this->attributes['role'] == UserRole::INSTRUCTOR;
+        return $this->attributes['role'] === UserRole::INSTRUCTOR;
     }
 
     /**
@@ -105,6 +105,6 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function isLearner()
     {
-        return $this->attributes['role'] == UserRole::LEARNER;
+        return $this->attributes['role'] === UserRole::LEARNER;
     }
 }

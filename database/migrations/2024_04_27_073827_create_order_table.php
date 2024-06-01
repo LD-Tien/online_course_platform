@@ -15,8 +15,8 @@ return new class extends Migration {
         Schema::create('order', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->enum('payment_method', PaymentMethod::getValues())->default(PaymentMethod::PAYPAL);
-            $table->enum('status', [OrderStatus::getValues()])->default(OrderStatus::PAID);
+            $table->tinyInteger('payment_method')->default(PaymentMethod::PAYPAL);
+            $table->tinyInteger('status')->default(OrderStatus::PAID);
             $table->timestamps();
 
             /** Foreign key */

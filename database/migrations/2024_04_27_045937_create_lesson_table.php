@@ -16,8 +16,9 @@ return new class extends Migration {
             $table->string('name');
             $table->string('video_path');
             $table->string('description', 4000);
+            $table->unsignedTinyInteger('duration');
             $table->boolean('is_preview')->default(false);
-            $table->enum('status', LessonStatus::getValues())->default(LessonStatus::DRAFT);
+            $table->tinyInteger('status')->default(LessonStatus::DRAFT);
             $table->smallInteger('ordinal_number');
             $table->unsignedBigInteger('module_id');
             $table->json('analysis_text_result_json')->nullable();

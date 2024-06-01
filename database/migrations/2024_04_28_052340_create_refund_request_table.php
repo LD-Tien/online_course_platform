@@ -16,8 +16,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('order_item_id');
             $table->string('reason', 2000);
-            $table->enum('status', RefundRequestStatus::getValues())
-                ->default(RefundRequestStatus::PENDING);
+            $table->tinyInteger('status')->default(RefundRequestStatus::PENDING);
             $table->timestamps();
 
             /** Foreign key */

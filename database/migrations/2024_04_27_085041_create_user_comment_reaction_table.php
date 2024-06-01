@@ -14,7 +14,7 @@ return new class extends Migration {
         Schema::create('user_comment_reaction', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('comment_id');
-            $table->enum('reaction_type', ReactionType::getValues());
+            $table->tinyInteger('reaction_type');
             $table->timestamps();
 
             /** Foreign key */

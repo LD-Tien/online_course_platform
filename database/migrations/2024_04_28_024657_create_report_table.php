@@ -15,9 +15,9 @@ return new class extends Migration {
         Schema::create('report', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->enum('report_type', ReportType::getValues());
+            $table->tinyInteger('report_type');
             $table->unsignedBigInteger('source_id');
-            $table->enum('status', ReportStatus::getValues())->default(ReportStatus::PENDING);
+            $table->tinyInteger('status')->default(ReportStatus::PENDING);
             $table->timestamps();
 
             /** Foreign key */
