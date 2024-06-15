@@ -17,4 +17,9 @@ class LessonRepository extends BaseRepository implements LessonRepositoryInterfa
     {
         return $this->model->where($column, $operator, $value)->get();
     }
+
+    public function finishLesson($userId, $lessonId)
+    {
+
+    }
 }

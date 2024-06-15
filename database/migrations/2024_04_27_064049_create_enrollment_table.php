@@ -10,10 +10,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('enrolment', function (Blueprint $table) {
+        Schema::create('enrollment', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('course_id');
-            $table->timestamp('enrolment_at')->nullable();
+            $table->timestamp('enrollment_at')->nullable();
             $table->timestamp('completed_at')->nullable();
 
             /** Foreign key */
@@ -37,6 +37,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('enrolment');
+        Schema::dropIfExists('enrollment');
     }
 };

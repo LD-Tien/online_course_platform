@@ -21,7 +21,7 @@ class CreateCourseService extends BaseService
         try {
             $this->data['id'] = hexdec(uniqid());
 
-            if ($this->data['thumbnail_file']) {
+            if (isset($this->data['thumbnail_file'])) {
                 $file = $this->data['thumbnail_file'];
                 $path = "public/uploads/user_{$this->data['user_id']}/course_{$this->data['id']}/thumbnail";
                 $thumbnail_path = Storage::putFile($path, $file);

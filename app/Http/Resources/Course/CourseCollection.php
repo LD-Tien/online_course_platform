@@ -14,8 +14,6 @@ class CourseCollection extends ResourceCollection
      */
     public function toArray(Request $request): array
     {
-        return [
-            'courses' => $this->collection,
-        ];
+        return parent::toArray($request);
     }
 }

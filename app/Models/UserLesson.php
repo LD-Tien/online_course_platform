@@ -11,5 +11,12 @@ class UserLesson extends Model
 
     protected $table = 'user_lesson';
 
+    protected $fillable = [
+        'user_id',
+        'lesson_id',
+        'completed_at'
+    ];
+
     const CREATED_AT = 'completed_at';
+    const UPDATED_AT = 'completed_at';
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Instructor;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Course\CourseCollection;
@@ -8,7 +8,7 @@ use App\Http\Resources\Course\CourseResource;
 use App\Models\Course;
 use App\Services\Course\CreateCourseService;
 use App\Services\Course\DeleteCourseService;
-use App\Services\Course\GetAllByFieldService;
+use App\Services\Course\GetCourseByQueryService;
 use App\Services\Course\UpdateCourseService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,15 +23,25 @@ class CourseController extends Controller
      */
     public function index(Request $request)
     {
-        \Log::info($request->query());
-        $result = resolve(GetAllByFieldService::class)
-            ->setParams(['column' => 'user_id', 'value' => Auth::id()])
+        $query = $request->query();
+        $query['filters']['user_id'] = Auth::id();
+        $result = resolve(GetCourseByQueryService::class)
+            ->setParams($query)
             ->handle();
 
         if ($result) {
             return $this->responseSuccess([
                 'message' => __('messages.get_success'),
-                'data' => new CourseCollection($result)
+                'data' => new CourseCollection($result),
+                'meta' => [
+                    'current_page' => $result->currentPage(),
+                    'from' => $result->firstItem(),
+                    'last_page' => $result->lastPage(),
+                    'path' => $result->path(),
+                    'per_page' => $result->perPage(),
+                    'to' => $result->lastItem(),
+                    'total' => $result->total(),
+                ],
             ]);
         }
 

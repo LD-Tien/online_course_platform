@@ -1,10 +1,16 @@
 <?php
 
 use App\Enums\UserRole;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CourseController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Common\CategoryController;
+use App\Http\Controllers\Common\Course\CourseController;
+use App\Http\Controllers\Common\LessonVideoController;
+use App\Http\Controllers\Instructor\CourseController as InstructorCourseController;
 use App\Http\Controllers\CourseModerationController;
+use App\Http\Controllers\Learner\EnrollmentController;
 use App\Http\Controllers\LessonController;
+use App\Http\Controllers\Learner\LessonController as LearnerLessonController;
+use App\Http\Controllers\Moderator\CourseController as ModeratorCourseController;
 use App\Http\Controllers\ModuleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,7 +28,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user', function (Request $request) {
-        return $request->user();
+        return response()->json([
+            'code' => 200,
+            'message' => 'Get success',
+            'data' => \Auth::user()
+        ]);
     });
 });
 
@@ -31,11 +41,11 @@ Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::ADMIN])
         Route::get('', function () {
             return 'admin';
         });
-        Route::get('categories', [CategoryController::class, 'index']);
-        Route::get('categories/{id}', [CategoryController::class, 'show']);
-        Route::post('categories', [CategoryController::class, 'store']);
-        Route::put('categories/{id}', [CategoryController::class, 'update']);
-        Route::delete('categories/{id}', [CategoryController::class, 'destroy']);
+        Route::get('categories', [AdminCategoryController::class, 'index']);
+        Route::get('categories/{id}', [AdminCategoryController::class, 'show']);
+        Route::post('categories', [AdminCategoryController::class, 'store']);
+        Route::put('categories/{id}', [AdminCategoryController::class, 'update']);
+        Route::delete('categories/{id}', [AdminCategoryController::class, 'destroy']);
     });
 
 Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::MODERATOR])
@@ -45,8 +55,8 @@ Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::MODERATOR])
         });
 
         Route::prefix('courses')->group(function () {
-            Route::get('', [CourseController::class, 'index']);
-            Route::get('{course}', [CourseController::class, 'show']);
+            Route::get('', [ModeratorCourseController::class, 'index']);
+            Route::get('{course}', [ModeratorCourseController::class, 'show']);
             Route::get('{course}/analysis', [CourseModerationController::class, 'startCourseAnalysis']);
             Route::get('{course}/modules/{module}/lessons/{lesson}/analysis', [CourseModerationController::class, 'startLessonAnalysis']);
             Route::post('handleResponseEdenAI', [CourseModerationController::class, 'handleResponseEdenAI']);
@@ -59,11 +69,11 @@ Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::INSTRUCTOR])
             return 'instructor';
         });
         Route::prefix('courses')->group(function () {
-            Route::get('', [CourseController::class, 'index']);
-            Route::get('{course}', [CourseController::class, 'show']);
-            Route::post('', [CourseController::class, 'store']);
-            Route::put('{course}', [CourseController::class, 'update']);
-            Route::delete('{course}', [CourseController::class, 'destroy']);
+            Route::get('', [InstructorCourseController::class, 'index']);
+            Route::get('{course}', [InstructorCourseController::class, 'show']);
+            Route::post('', [InstructorCourseController::class, 'store']);
+            Route::put('{course}', [InstructorCourseController::class, 'update']);
+            Route::delete('{course}', [InstructorCourseController::class, 'destroy']);
 
             Route::prefix('{course}/modules')->group(function () {
                 Route::post('', [ModuleController::class, 'store']);
@@ -82,8 +92,25 @@ Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::INSTRUCTOR])
         });
     });
 
+Route::get('categories', [CategoryController::class, 'index']);
+
+Route::prefix('courses')->group(function () {
+    Route::get('', [CourseController::class, 'index']);
+    Route::get('{course}', [CourseController::class, 'show']);
+});
+
 Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::LEARNER . ',' . UserRole::INSTRUCTOR])
-    ->group(function () {
+    ->prefix('learner')->group(function () {
+        Route::prefix('courses')->group(function () {
+            Route::post('{course}/enrollment', [EnrollmentController::class, 'enrollment']);
+            Route::get('{course}', [CourseController::class, 'show']);
+        });
+
+        Route::prefix('lessons')->group(function () {
+            Route::post('{lesson}/finish', [LearnerLessonController::class, 'finishLesson']);
+            Route::delete('{lesson}/unfinished', [LearnerLessonController::class, 'unfinishedLesson']);
+        });
+
         Route::get('', function () {
             return 'leaner';
         });
@@ -96,6 +123,8 @@ Route::prefix('eden-ai')->group(function () {
 Route::get('/test', function () {
     return 'test api successfully.';
 });
+
+Route::get('/{lesson}/video', [LessonVideoController::class, 'getVideo']);
 
 Route::fallback(function () {
     abort(404, 'API resource not found');

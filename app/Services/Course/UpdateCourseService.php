@@ -19,11 +19,13 @@ class UpdateCourseService extends BaseService
     public function handle()
     {
         try {
-            if ($this->data['dataUpdate']['thumbnail_file']) {
-                Storage::delete($this->data['course']['thumbnail_path']);
+            if (isset($this->data['dataUpdate']['thumbnail_file'])) {
+                if (isset($this->data['course']['thumbnail_path'])) {
+                    Storage::delete($this->data['course']['thumbnail_path']);
+                }
                 $file = $this->data['dataUpdate']['thumbnail_file'];
                 $path = "public/uploads/user_{$this->data['course']['user_id']}/course_{$this->data['course']['id']}/thumbnail";
-                $this->data['dataUpdate']['thumbnail'] = Storage::putFile($path, $file) ?? '';
+                $this->data['dataUpdate']['thumbnail_path'] = Storage::putFile($path, $file) ?? '';
             }
 
             return $this->courseRepository->update($this->data['dataUpdate'], $this->data['course']['id']);

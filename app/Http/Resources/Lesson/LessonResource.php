@@ -22,12 +22,17 @@ class LessonResource extends JsonResource
             'description' => $this->description,
             'module_id' => $this->module_id,
             'video_path' => Storage::url($this->video_path),
+            'duration' => $this->duration,
             'is_preview' => $this->is_preview,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
 
-        if ($request->user()->isModerator()) {
+        if ($request->user() && ($request->user()->isLearner() || $request->user()->isInstructor())) {
+            $data['is_finish'] = (boolean) $this->getFinishTime($request->user()->id);
+        }
+
+        if ($request->user() && $request->user()->isModerator()) {
             $data['analysis_text_result_json'] = json_decode($this->analysis_text_result_json);
             $data['analysis_video_result_json'] = json_decode($this->analysis_video_result_json);
         }

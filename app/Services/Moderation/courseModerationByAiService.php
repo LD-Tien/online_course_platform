@@ -13,8 +13,10 @@ class CourseModerationByAiService extends BaseService
         try {
             foreach ($this->data['course']['modules'] as $module) {
                 foreach ($module['lessons'] as $lesson) {
-                    SendVideoExplicitContentDetectionRequest::dispatch($lesson);
-                    SendTextModerationRequest::dispatch($lesson);
+                    if (is_null($lesson['analysis_video_result_json']))
+                        SendVideoExplicitContentDetectionRequest::dispatch($lesson);
+                    if (is_null($lesson['analysis_text_result_json']))
+                        SendTextModerationRequest::dispatch($lesson);
                 }
             }
 

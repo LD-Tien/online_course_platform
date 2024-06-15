@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Category\CategoryCollection;
 use App\Services\Category\CreateCategoryService;
 use App\Services\Category\DeleteCategoryService;
 use App\Services\Category\FindCategoryService;
-use App\Services\Category\GetAllByFieldService;
+use App\Services\Category\GetCategoryByQueryService;
 use App\Services\Category\UpdateCategoryService;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,14 +17,24 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $result = resolve(GetAllByFieldService::class)->handle();
+        $query = $request->query();
+        $result = resolve(GetCategoryByQueryService::class)->setParams($query)->handle();
 
         if ($result) {
             return $this->responseSuccess([
                 'message' => __('messages.get_success'),
-                'data' => $result
+                'data' => new CategoryCollection($result),
+                'meta' => [
+                    'current_page' => $result->currentPage(),
+                    'from' => $result->firstItem(),
+                    'last_page' => $result->lastPage(),
+                    'path' => $result->path(),
+                    'per_page' => $result->perPage(),
+                    'to' => $result->lastItem(),
+                    'total' => $result->total(),
+                ],
             ]);
         }
 
@@ -35,7 +46,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $result = resolve(CreateCategoryService::class)->setParams()->handle();
+        $result = resolve(CreateCategoryService::class)->setParams($request->all())->handle();
 
         if ($result) {
             return $this->responseSuccess([
