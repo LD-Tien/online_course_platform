@@ -33,7 +33,13 @@ class CourseResource extends JsonResource
         if ($request->route()->getActionMethod() === 'show') {
             $data['description'] = $this->description;
             $data['modules'] = ModuleResource::collection($this->modules);
+
+            if ($request->user() && ($request->user()->isLearner() || $request->user()->isInstructor())) {
+                $data['user_review'] = $this->reviews->where('user_id', $request->user()->id)->first();
+                $data['is_enrolled'] = (boolean) $this->enrollments->where('user_id', $request->user()->id)->first();
+            }
         }
+
 
         return $data;
     }

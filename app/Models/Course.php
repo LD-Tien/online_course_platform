@@ -31,6 +31,16 @@ class Course extends Model
         return $this->hasMany(Module::class);
     }
 
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(UserReview::class);
+    }
+
+    public function enrollments(): HasMany
+    {
+        return $this->hasMany(Enrollment::class);
+    }
+
     public function category(): BelongsTo
     {
         return $this->BelongsTo(Category::class);

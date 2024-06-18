@@ -6,6 +6,6 @@ use BenSampo\Enum\Enum;
 
 final class ReactionType extends Enum
 {
+    const DISLIKE = 0;
     const LIKE = 1;
-    const DISLIKE = 2;
 }

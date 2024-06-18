@@ -5,9 +5,12 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Common\CategoryController;
 use App\Http\Controllers\Common\Course\CourseController;
 use App\Http\Controllers\Common\LessonVideoController;
+use App\Http\Controllers\Common\Review\ReviewController;
 use App\Http\Controllers\Instructor\CourseController as InstructorCourseController;
 use App\Http\Controllers\CourseModerationController;
+use App\Http\Controllers\Learner\Comment\CommentController;
 use App\Http\Controllers\Learner\EnrollmentController;
+use App\Http\Controllers\Learner\ReviewController as LearnerReviewController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\Learner\LessonController as LearnerLessonController;
 use App\Http\Controllers\Moderator\CourseController as ModeratorCourseController;
@@ -99,6 +102,10 @@ Route::prefix('courses')->group(function () {
     Route::get('{course}', [CourseController::class, 'show']);
 });
 
+Route::prefix('reviews')->group(function () {
+    Route::get('{courseId}', [ReviewController::class, 'index']);
+});
+
 Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::LEARNER . ',' . UserRole::INSTRUCTOR])
     ->prefix('learner')->group(function () {
         Route::prefix('courses')->group(function () {
@@ -109,6 +116,17 @@ Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::LEARNER . ',' . 
         Route::prefix('lessons')->group(function () {
             Route::post('{lesson}/finish', [LearnerLessonController::class, 'finishLesson']);
             Route::delete('{lesson}/unfinished', [LearnerLessonController::class, 'unfinishedLesson']);
+        });
+
+        Route::prefix('reviews')->group(function () {
+            Route::post('', [LearnerReviewController::class, 'store']);
+        });
+
+        Route::prefix('comments')->group(function () {
+            Route::get('', [CommentController::class, 'index']);
+            Route::post('', [CommentController::class, 'store']);
+            Route::delete('{comment_id}', [CommentController::class, 'delete']);
+            Route::post('reaction', [CommentController::class, 'reaction']);
         });
 
         Route::get('', function () {

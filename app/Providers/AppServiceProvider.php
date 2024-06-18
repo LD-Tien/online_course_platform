@@ -3,18 +3,24 @@
 namespace App\Providers;
 
 use App\Interfaces\Category\CategoryRepositoryInterface;
+use App\Interfaces\Comment\CommentReactionRepositoryInterface;
+use App\Interfaces\Comment\CommentRepositoryInterface;
 use App\Interfaces\Enrollment\EnrollmentRepositoryInterface;
 use App\Interfaces\Lesson\UserLessonRepositoryInterface;
 use App\Interfaces\Moderation\ModerationRepositoryInterface;
 use App\Interfaces\Lesson\LessonRepositoryInterface;
 use App\Interfaces\Module\ModuleRepositoryInterface;
+use App\Interfaces\Review\ReviewRepositoryInterface;
 use App\Interfaces\User\UserRepositoryInterface;
 use App\Repositories\Category\CategoryRepository;
+use App\Repositories\Comment\CommentReactionRepository;
+use App\Repositories\Comment\CommentRepository;
 use App\Repositories\EdenAI\EdenAIRepository;
 use App\Repositories\Enrollment\EnrollmentRepository;
 use App\Repositories\Lesson\LessonRepository;
 use App\Repositories\Lesson\UserLessonRepository;
 use App\Repositories\Module\ModuleRepository;
+use App\Repositories\Review\ReviewRepository;
 use App\Repositories\User\UserRepository;
 use App\Interfaces\Course\CourseRepositoryInterface;
 use App\Repositories\Course\CourseRepository;
@@ -35,6 +41,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(UserLessonRepositoryInterface::class, UserLessonRepository::class);
         $this->app->bind(EnrollmentRepositoryInterface::class, EnrollmentRepository::class);
         $this->app->bind(ModerationRepositoryInterface::class, EdenAIRepository::class);
+        $this->app->bind(ReviewRepositoryInterface::class, ReviewRepository::class);
+        $this->app->bind(CommentRepositoryInterface::class, CommentRepository::class);
+        $this->app->bind(CommentReactionRepositoryInterface::class, CommentReactionRepository::class);
     }
 
     /**

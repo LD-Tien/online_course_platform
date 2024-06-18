@@ -24,7 +24,7 @@ class SendVideoExplicitContentDetectionRequest implements ShouldQueue
     {
         try {
             $videoFile = fopen(\Storage::path($this->lessonData['video_path']), 'r');
-            $webHookUri = config('app.url') . '/api/eden-ai/webhook/moderation-video/' . $this->lessonData['id'];
+            $webHookUri = 'https://c0c0-113-185-105-20.ngrok-free.app' . '/api/eden-ai/webhook/moderation-video/' . $this->lessonData['id'];
             $response = resolve(ModerationRepositoryInterface::class)->detectExplicitContentInVideoFileAsync($videoFile, $webHookUri);
             \Log::info($response->getBody()->getContents());
         } catch (\Exception $e) {
