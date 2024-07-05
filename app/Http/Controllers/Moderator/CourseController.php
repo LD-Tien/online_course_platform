@@ -7,6 +7,7 @@ use App\Http\Resources\Course\CourseCollection;
 use App\Http\Resources\Course\CourseResource;
 use App\Models\Course;
 use App\Services\Course\GetCourseByQueryService;
+use App\Services\Course\UpdateCourseService;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -64,9 +65,24 @@ class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Course $course)
     {
-        //
+        $result = resolve(UpdateCourseService::class)->setParams([
+            'course' => $course,
+            'dataUpdate' => [
+                'status' => $request->input('status')
+            ]
+        ])->handle();
+
+
+        if ($result) {
+            return $this->responseSuccess([
+                'message' => __('messages.update_success'),
+                'data' => $result
+            ]);
+        }
+
+        return $this->responseErrors(__('messages.update_fail'));
     }
 
     /**

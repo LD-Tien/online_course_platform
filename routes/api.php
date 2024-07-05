@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\UserRole;
+use App\Events\MyEvent;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Common\CategoryController;
 use App\Http\Controllers\Common\Course\CourseController;
@@ -63,6 +64,7 @@ Route::middleware(['auth:sanctum', 'checkUserRole:' . UserRole::MODERATOR])
             Route::get('{course}/analysis', [CourseModerationController::class, 'startCourseAnalysis']);
             Route::get('{course}/modules/{module}/lessons/{lesson}/analysis', [CourseModerationController::class, 'startLessonAnalysis']);
             Route::post('handleResponseEdenAI', [CourseModerationController::class, 'handleResponseEdenAI']);
+            Route::put('{course}', [ModeratorCourseController::class, 'update']);
         });
     });
 
@@ -139,6 +141,7 @@ Route::prefix('eden-ai')->group(function () {
 });
 
 Route::get('/test', function () {
+    event(new MyEvent('hello world'));
     return 'test api successfully.';
 });
 

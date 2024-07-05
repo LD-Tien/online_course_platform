@@ -15,6 +15,6 @@ class CommentReactionRepository extends BaseRepository implements CommentReactio
 
     public function updateOrCreate(array $conditions, array $data)
     {
-        return $this->model->updateOrCreate($conditions, $data);
+        return $this->model->updateOrInsert($conditions, $data);
     }
 }

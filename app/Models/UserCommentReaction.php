@@ -16,6 +16,4 @@ class UserCommentReaction extends Model
         'comment_id',
         'reaction_type'
     ];
-
-    protected $primaryKey = 'comment_id';
 }

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MyEvent;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\Module;
+use App\Services\Course\UpdateCourseService;
 use App\Services\Lesson\UpdateLessonService;
 use App\Services\Moderation\CourseModerationByAiService;
 use App\Services\Moderation\LessonModerationByAiService;
@@ -78,6 +80,8 @@ class CourseModerationController extends Controller
         if (!$result) {
             Log::error('Error when update lesson in handle video moderation result');
         }
+
+        event(new MyEvent('Đã có kết quả kiểm duyệt của bài giảng ' . $lesson->name));
 
         return $this->responseSuccess([]);
     }
